@@ -14,16 +14,16 @@ foreign export javascript "hs_start" main :: IO ()
 #endif
 -----------------------------------------------------------------------------
 main :: IO ()
-main = startApp pointerEvents app
+main = startApp Miso.pointerEvents app
 -----------------------------------------------------------------------------
 app :: App () ()
 app = (component () noop view_)
 #ifndef WASM
-  { scripts = [ Src "https://aframe.io/releases/1.7.0/aframe.min.js" ]
+  { scripts = [ Src "https://aframe.io/releases/1.7.0/aframe.min.js" False ]
   }
 #endif  
 -----------------------------------------------------------------------------
-view_ :: () -> View () ()
+view_ :: () -> View () () () ()
 view_ () =
   ascene_ []
     [ abox_
@@ -59,33 +59,33 @@ view_ () =
       []
     ]
 -----------------------------------------------------------------------------
-ascene_ :: [Attribute action] -> [View parent action] -> View parent action
+ascene_ :: [Attribute model action] -> [View context props model action] -> View context props model action
 ascene_ = node HTML "a-scene"
 -----------------------------------------------------------------------------
-abox_ :: [Attribute action] -> [View parent action] -> View parent action
+abox_ :: [Attribute model action] -> [View context props model action] -> View context props model action
 abox_ = node HTML "a-box"
 -----------------------------------------------------------------------------
-asphere_ :: [Attribute action] -> [View parent action] -> View parent action
+asphere_ :: [Attribute model action] -> [View context props model action] -> View context props model action
 asphere_ = node HTML "a-sphere"
 -----------------------------------------------------------------------------
-acylinder_ :: [Attribute action] -> [View parent action] -> View parent action
+acylinder_ :: [Attribute model action] -> [View context props model action] -> View context props model action
 acylinder_ = node HTML "a-cylinder"
 -----------------------------------------------------------------------------
-aplane_ :: [Attribute action] -> [View parent action] -> View parent action
+aplane_ :: [Attribute model action] -> [View context props model action] -> View context props model action
 aplane_ = node HTML "a-plane"
 -----------------------------------------------------------------------------
-asky_ :: [Attribute action] -> [View parent action] -> View parent action
+asky_ :: [Attribute model action] -> [View context props model action] -> View context props model action
 asky_ = node HTML "a-sky"
 -----------------------------------------------------------------------------
-position_ :: MisoString -> Attribute action
+position_ :: MisoString -> Attribute model action
 position_ = textProp "position"
 -----------------------------------------------------------------------------
-color_ :: Color -> Attribute action
+color_ :: Color -> Attribute model action
 color_ = textProp "color" . renderColor
 -----------------------------------------------------------------------------
-rotation_ :: MisoString -> Attribute action
+rotation_ :: MisoString -> Attribute model action
 rotation_ = textProp "rotation"
 -----------------------------------------------------------------------------
-radius_ :: Double -> Attribute action
+radius_ :: Double -> Attribute model action
 radius_ = doubleProp "radius"
 -----------------------------------------------------------------------------
